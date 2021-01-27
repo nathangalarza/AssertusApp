@@ -1,0 +1,10 @@
+Server=localhost\MSSQLSERVER01;Database=master;Trusted_Connection=True;
+
+SQL Administrator;
+Server=localhost\MSSQLSERVER01;Database=master;Trusted_Connection=True;
+
+Meta-Data Folder:
+
+C:\SQL2019\Developer_ENU\
+
+Installation Resource Folder

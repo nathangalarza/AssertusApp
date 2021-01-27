@@ -1,0 +1,53 @@
+﻿
+@if (Session["userName"] != null)
+{
+    
+    @*<nav class="navbar navbar-light navbar-expand-md navigation-clean-button" style="background-color: #34b3ea;">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="color: rgb(255,255,255);">MyContact | Lookup</a><button  class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav mr-auto"></ul><span class="navbar-text actions"> <a class="login" href="#" style="color: rgb(255,255,255);">Welcome @Session["userName"].ToString()</a>@Html.ActionLink("Exit", "Logoff", "Login")</span>
+            </div>
+        </div>
+    </nav>*@
+
+
+
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark" style="background-color: #20B7EF
+">
+        <a style="color:aliceblue" class="navbar-brand" href="#">MyContacts &nbsp; | &nbsp; Lookup</a>
+
+
+
+
+
+        <div class="container" style="text-align:right">
+            <span class="nav-link" style="color:white">  Welcome @Session["userName"].ToString()</span>
+            @Html.ActionLink("Exit", "Logoff", "Login")
+        </div>
+
+
+    </nav>
+
+}
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    @*<link rel="stylesheet" href="~/Content/Search/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/Search/Navigation-with-Button.css" />
+    <script src="~/Scripts/Search/bootstrap.min.js"></script>*@
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+
+</head>
+
+
+
+    @RenderBody()
+    @Scripts.Render("~/scripts/jquery")
+    <script type="text/javascript" src="@Url.Content("/Scripts/Modal/AddNewContactModal.js")"></script>
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+

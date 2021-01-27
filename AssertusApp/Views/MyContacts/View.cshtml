@@ -1,0 +1,125 @@
+﻿@model IEnumerable<AssertusApp.Models.DB.Contact>
+@using AssertusApp.Models.DB;
+@{
+    ViewBag.Title = "View";
+    var newModel = new Contact();
+}
+@*<link rel="stylesheet" href="~/Content/Search/bootstrap.min.css" />
+<link rel="stylesheet" href="~/Content/Search/Navigation-with-Button.css" />
+<script src="~/Scripts/Search/bootstrap.min.js"></script>*@
+    @*<link rel="stylesheet" href="~/Content/Search/Navigation-with-Button.css" />
+    <script src="~/Scripts/Search/bootstrap.min.js"></script>*@
+@*<script src="js/jquery-1.11.0.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/wow.min.js"></script>
+
+    <h2>View</h2>*@
+<div class="container">
+    <div class="filter-items">
+        <form asp-controller="myContacts" asp-action="Search" method="get">
+            <p>
+                Filter: <input type="text" name="SearchString" />
+                <input type="submit" value="Filter" />
+                <div class="AddNewLink" style="text-align:left">
+                    <a id="open"> + Add New</a>
+                </div>
+
+            </p>
+        </form>
+    </div>
+
+</div>
+
+@*<div class="container">
+    <div class="row">
+        <div class="col"><label style="margin: 17px;color: rgb(198,198,198);">FIlter:</label><input type="search" style="width: 394px;" /></div>
+        <div class="col-xl-5" style="margin: 10px;width: 441px;"><button class="btn btn-primary" type="button" style="width: 154px;">Search</button><a href="#" style="padding-left: 158px;">+Add New</a></div>
+    </div>
+</div>*@
+
+
+<div id="showmodal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            @{
+                Html.RenderPartial("_ContactModalParcial", newModel);
+            }
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<label style="color:blue">Search Results</label>
+<table class="table">
+    <tr>
+        <th>
+            <label style="color:lightgrey">Action</label>
+        </th>
+        <th>
+         <label style="color:lightgrey">Name</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Phone Number</label>
+           
+        </th>
+        <th>
+            <label style="color:lightgrey">Fax</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Email</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Notes</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Last Update</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Last Update User</label>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+
+                @Html.ActionLink("View", "Details", new { id = item.ContactID }) |
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.eMail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateUserName)
+            </td>
+            <td>
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.ContactID }) 
+            </td>
+        </tr>
+    }
+
+</table>
+<script>
+    $('#open').click(function () {
+        $('#showmodal').modal('show');
+    });
+    $('#openViewModal').click(function () {
+        $('#showViewModal').modal('show');
+    });
+</script>
