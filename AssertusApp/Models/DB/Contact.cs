@@ -16,13 +16,22 @@ namespace AssertusApp.Models.DB
     public partial class Contact
     {
         public int ContactID { get; set; }
+        [Required]
+        [StringLength(50)]
         public string Name { get; set; }
-        //[Required]
+        [Required]
+        [StringLength(10)]
         //[RegularExpression(@"^\(\d{3}\)\s{0,1}\d{3}-\d{7}$", ErrorMessage = "Enter a valid number")]
+        [DataType(DataType.PhoneNumber)]
         public string Phone { get; set; }
-        //[Required]
+       
+        [StringLength(10)]
         //[RegularExpression(@"^\(\d{3}\)\s{0,1}\d{3}-\d{7}$", ErrorMessage = "Enter a valid number")]
+        [DataType(DataType.PhoneNumber)]
         public string Fax { get; set; }
+        [StringLength(50)]
+
+        [DataType(DataType.EmailAddress, ErrorMessage = "E-mail is not valid")]
         public string eMail { get; set; }
         public string Notes { get; set; }
         public Nullable<System.DateTime> LastUpdate { get; set; }

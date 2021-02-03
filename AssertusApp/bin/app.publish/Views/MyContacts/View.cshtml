@@ -1,0 +1,236 @@
+﻿@model IEnumerable<AssertusApp.Models.DB.Contact>
+@using AssertusApp.Models.DB;
+@{
+    ViewBag.Title = "View";
+  
+}
+
+<div class="container">
+    <div class="filter-items">
+        <form asp-controller="myContacts" asp-action="Search" method="get">
+            <p>
+                Filter: <input type="text" name="SearchString" />
+                <input type="submit" value="Filter" />
+                <div class="AddNewLink" style="text-align:left">
+
+                    <a href="javascript:void(0);" class="anchorAdd">+Add New</a>
+                    @*<a id="open"> + Add New</a>*@
+                </div>
+
+            </p>
+        </form>
+    </div>
+
+</div>
+
+
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
+    </div>
+
+</div>
+<div id="showmodal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <h4 class="modal-header" id="AddContactLabel">Add Contact</h4>
+
+
+
+            @Html.Partial("~/Views/MyContacts/Modal/CreateModal.cshtml", new AssertusApp.Models.DB.Contact())
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<label style="color:blue">Search Results</label>
+<table class="table">
+    <tr>
+        <th>
+            <label style="color:lightgrey">Action</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Name</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Phone Number</label>
+
+        </th>
+        <th>
+            <label style="color:lightgrey">Fax</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Email</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Notes</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Last Update</label>
+        </th>
+        <th>
+            <label style="color:lightgrey">Last Update User</label>
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="javascript:void(0);" class="anchorDetail" data-id="@item.ContactID">View</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fax)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.eMail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Notes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastUpdateUserName)
+            </td>
+            <td>
+              
+                @Html.ActionLink("Edit", "Edit", new { id = item.ContactID })
+            </td>
+        </tr>
+    }
+
+</table>
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+        var ConactDetailPostBackURL = 'Details';
+        var CreateContactPostURL ='CreateModal'
+        $(function () {
+            $(".anchorDetail").click(function () {
+             
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: ConactDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+
+
+            $('#showmodal').on('hidden.bs.modal', function () {
+
+                location.reload(true);
+                
+            });
+
+            $(".anchorAdd").click(function () {
+              
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: CreateContactPostURL,
+                    success: function (data) {
+                    
+                        $('#myModalContentAdd').html(data);
+                        $('#showmodal').modal(options);
+                        $('#showmodal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+
+        function onChangeSuccess(data) {
+
+            if (data.status === "success") {
+                $("#modalcontent").modal('hide');
+                $("#message-area").html(data.view);
+                alert("Contact Created");
+            }
+
+            $.each(data.formErrors, function () {
+                console.log(data);
+                //$("[data-valmsg-for=" + this.key + "]").html(this.errors.join());
+            });
+        }
+
+        $(document).ready(function () {
+
+         
+
+
+
+            $("#showmodal").on("submit", "#form-createcontact", function (e) {
+                e.preventDefault();  // prevent standard form submission
+
+                var form = $(this);
+                $.ajax({
+                    url: form.attr("action"),
+                    method: form.attr("method"),  // post
+                    data: form.serialize(),
+                    success: function (partialResult) {
+                        if (partialResult == "1") {
+                            alert("succesfully Added");
+                            location.reload(true);
+
+                        } else {
+                            $("#form-createcontact").html(partialResult);
+                        }
+                       
+
+
+                    }
+                });
+            });
+
+
+        });
+    </script>
+
+}
+@*<script>
+    $('#open').click(function () {
+        $('#showmodal').modal('show');
+    });
+    $('#openViewModal').click(function () {
+        $('#showViewModal').modal('show');
+    });
+</script>*@

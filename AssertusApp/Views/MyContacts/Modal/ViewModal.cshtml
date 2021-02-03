@@ -1,0 +1,76 @@
+﻿
+@model AssertusApp.Models.DB.Contact
+
+    <div>
+
+        <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Contact Info</h4>
+        </div>
+
+
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Phone)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Phone)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Fax)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Fax)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.eMail)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.eMail)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Notes)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Notes)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LastUpdate)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LastUpdate)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LastUpdateUserName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.LastUpdateUserName)
+            </dd>
+
+        </dl>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+        
+
+        </div>
+
+    </div> 
+
+ 

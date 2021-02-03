@@ -1,0 +1,96 @@
+﻿@*@model AssertusApp.ViewModel.MyContactsViewModel
+
+    <html>
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+        <title>Prototipo de compania</title>
+        <link rel="stylesheet" href="bootstrap.min.css" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" />
+        <link rel="stylesheet" href="Registration-Form-with-Photo.css" />
+        <link rel="stylesheet" href="trelyco-login-vertical-horizontal-1.css" />
+        <link rel="stylesheet" href="trelyco-login-vertical-horizontal.css" />
+        <link rel="stylesheet" href="untitled.css" />
+    </head>
+
+    <body>
+        <div class="login-card" style="height: 249px;width: 397px;">
+            <div class="container"><input type="email" id="inputEmail" required placeholder="Nombre de Usuario" autofocus style="width: 212px;" /></div>
+            <form class="form-signin" style="text-align: center;padding-left: 89px;">
+                <span class="reauth-email"></span>
+                <div class="checkbox"></div><button class="btn btn-primary btn-block btn-lg btn-signin" type="submit" style="background-color: rgb(184,174,208);width: 182px;">Entrar </button>
+            </form>
+        </div>
+    </body>
+
+    </html>*@
+
+@*<h2>Index</h2>
+
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+
+    <form asp-controller="Movies" asp-action="Index">
+        <p>
+            Title: <input type="text" name="SearchString" />
+            <input type="submit" value="Filter" />
+        </p>
+    </form>
+
+    <table class="table">
+        <thead>*@
+
+@model AssertusApp.ViewModel.MyContactsViewModel
+
+<dt>
+   Name
+</dt>
+
+<dd>
+  Phone Number
+</dd>
+<dt>
+   Fax
+</dt>
+<dt>
+    Email
+</dt>
+<dt>
+    Last Logged In
+</dt>
+<dd>
+    <table class="table">
+        <tr>
+            <th>Course Title</th>
+            <th>Grade</th>
+        </tr>
+        @foreach (var contact in Model.contacts)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.Fax)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.eMail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => contact.LastUpdate)
+                </td>
+            </tr>
+        }
+    </table>
+</dd>
+    </dl>
+</div>
+<p>
+  @*  @Html.ActionLink("Edit", "Edit", new { id = Model.contacts }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>
