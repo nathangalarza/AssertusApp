@@ -220,10 +220,11 @@
     <Content Include="Views\MyContacts\Edit.cshtml" />
     <Content Include="Views\MyContacts\Details.cshtml" />
     <Content Include="Views\MyContacts\Create.cshtml" />
-    <Content Include="Views\MyContacts\View1.cshtml" />
     <Content Include="Views\MyContacts\_ContactModalParcial.cshtml" />
     <Content Include="Views\MyContacts\_ContactModalView.cshtml" />
     <Content Include="Views\_Dashboard.cshtml" />
+    <Content Include="Views\MyContacts\Modal\ViewModal.cshtml" />
+    <Content Include="Views\MyContacts\Modal\CreateModal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

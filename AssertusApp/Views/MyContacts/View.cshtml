@@ -2,18 +2,9 @@
 @using AssertusApp.Models.DB;
 @{
     ViewBag.Title = "View";
-    var newModel = new Contact();
+  
 }
-@*<link rel="stylesheet" href="~/Content/Search/bootstrap.min.css" />
-<link rel="stylesheet" href="~/Content/Search/Navigation-with-Button.css" />
-<script src="~/Scripts/Search/bootstrap.min.js"></script>*@
-    @*<link rel="stylesheet" href="~/Content/Search/Navigation-with-Button.css" />
-    <script src="~/Scripts/Search/bootstrap.min.js"></script>*@
-@*<script src="js/jquery-1.11.0.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/wow.min.js"></script>
 
-    <h2>View</h2>*@
 <div class="container">
     <div class="filter-items">
         <form asp-controller="myContacts" asp-action="Search" method="get">
@@ -21,7 +12,9 @@
                 Filter: <input type="text" name="SearchString" />
                 <input type="submit" value="Filter" />
                 <div class="AddNewLink" style="text-align:left">
-                    <a id="open"> + Add New</a>
+
+                    <a href="javascript:void(0);" class="anchorAdd">+Add New</a>
+                    @*<a id="open"> + Add New</a>*@
                 </div>
 
             </p>
@@ -30,20 +23,25 @@
 
 </div>
 
-@*<div class="container">
-    <div class="row">
-        <div class="col"><label style="margin: 17px;color: rgb(198,198,198);">FIlter:</label><input type="search" style="width: 394px;" /></div>
-        <div class="col-xl-5" style="margin: 10px;width: 441px;"><button class="btn btn-primary" type="button" style="width: 154px;">Search</button><a href="#" style="padding-left: 158px;">+Add New</a></div>
+
+<div id='myModal' class='modal'>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id='myModalContent'></div>
+        </div>
     </div>
-</div>*@
 
-
+</div>
 <div id="showmodal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            @{
-                Html.RenderPartial("_ContactModalParcial", newModel);
-            }
+        <h4 class="modal-header" id="AddContactLabel">Add Contact</h4>
+
+
+
+            @Html.Partial("~/Views/MyContacts/Modal/CreateModal.cshtml", new AssertusApp.Models.DB.Contact())
+
+
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
@@ -55,11 +53,11 @@
             <label style="color:lightgrey">Action</label>
         </th>
         <th>
-         <label style="color:lightgrey">Name</label>
+            <label style="color:lightgrey">Name</label>
         </th>
         <th>
             <label style="color:lightgrey">Phone Number</label>
-           
+
         </th>
         <th>
             <label style="color:lightgrey">Fax</label>
@@ -81,16 +79,19 @@
 
     @foreach (var item in Model)
     {
+      
+       string UserPhone = item.Phone;
+       string MaskedPhone = String.Format("{0:(###) ###-####}", UserPhone);
+      
         <tr>
             <td>
-
-                @Html.ActionLink("View", "Details", new { id = item.ContactID }) |
+                <a href="javascript:void(0);" class="anchorDetail" data-id="@item.ContactID">View</a>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Phone)
+                @Html.Raw(String.Format("{0:(###) ###-####}", item.Phone))  
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Fax)
@@ -108,18 +109,132 @@
                 @Html.DisplayFor(modelItem => item.LastUpdateUserName)
             </td>
             <td>
-
-                @Html.ActionLink("Edit", "Edit", new { id = item.ContactID }) 
+              
+                @Html.ActionLink("Edit", "Edit", new { id = item.ContactID })
             </td>
         </tr>
     }
 
 </table>
-<script>
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script>
+        var ConactDetailPostBackURL = 'Details';
+        var CreateContactPostURL ='CreateModal'
+        $(function () {
+            $(".anchorDetail").click(function () {
+             
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: ConactDetailPostBackURL,
+                    contentType: "application/json; charset=utf-8",
+                    data: { "id": id },
+                    datatype: "json",
+                    success: function (data) {
+                        debugger;
+                        $('#myModalContent').html(data);
+                        $('#myModal').modal(options);
+                        $('#myModal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+
+
+            $('#showmodal').on('hidden.bs.modal', function () {
+
+                location.reload(true);
+                
+            });
+
+            $(".anchorAdd").click(function () {
+              
+                var $buttonClicked = $(this);
+                var id = $buttonClicked.attr('data-id');
+                var options = { "backdrop": "static", keyboard: true };
+                $.ajax({
+                    type: "GET",
+                    url: CreateContactPostURL,
+                    success: function (data) {
+                    
+                        $('#myModalContentAdd').html(data);
+                        $('#showmodal').modal(options);
+                        $('#showmodal').modal('show');
+
+                    },
+                    error: function () {
+                        alert("Dynamic content load failed.");
+                    }
+                });
+            });
+
+            $("#closbtn").click(function () {
+                $('#myModal').modal('hide');
+            });
+        });
+
+        function onChangeSuccess(data) {
+
+            if (data.status === "success") {
+                $("#modalcontent").modal('hide');
+                $("#message-area").html(data.view);
+                alert("Contact Created");
+            }
+
+            $.each(data.formErrors, function () {
+                console.log(data);
+                //$("[data-valmsg-for=" + this.key + "]").html(this.errors.join());
+            });
+        }
+
+        $(document).ready(function () {
+
+         
+
+
+
+            $("#showmodal").on("submit", "#form-createcontact", function (e) {
+                e.preventDefault();  // prevent standard form submission
+
+                var form = $(this);
+                $.ajax({
+                    url: form.attr("action"),
+                    method: form.attr("method"),  // post
+                    data: form.serialize(),
+                    success: function (partialResult) {
+                        if (partialResult == "1") {
+                            alert("succesfully Added");
+                            location.reload(true);
+
+                        } else {
+                            $("#form-createcontact").html(partialResult);
+                        }
+                       
+
+
+                    }
+                });
+            });
+
+
+        });
+    </script>
+
+}
+@*<script>
     $('#open').click(function () {
         $('#showmodal').modal('show');
     });
     $('#openViewModal').click(function () {
         $('#showViewModal').modal('show');
     });
-</script>
+</script>*@
